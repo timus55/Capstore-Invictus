@@ -7,7 +7,7 @@ export class Order{
      orderId:number;
      orderAmount:number;
      orderStatus:string;
-     orderDate:String;
+     orderDate:string;
      statusDate:Date;
      transaction:Transaction;
      address:address;

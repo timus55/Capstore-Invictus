@@ -11,10 +11,10 @@ import { CustomerService } from '../CustomerService/customer.service';
 export class ReturnComponent implements OnInit {
 
  order:Order;
- username = "svn2@gmail.com" // set by token 
  isCouponApplied:any ;
- message:string="";
-
+ cancellation:boolean = true;
+ cancelStatus:boolean = true;
+ couponApplied:string ="Applied";
   constructor(private customerService : CustomerService,private router:Router) { }
 
   ngOnInit() {
@@ -23,6 +23,20 @@ export class ReturnComponent implements OnInit {
       console.log(data);
       this.isCouponApplied = data;
     })
+
+    if(this.order.orderStatus === "Delivered"){
+      this.cancellation = false;
+    }
+    if(this.order.orderStatus === "Cancelled"){
+      this.cancelStatus = false;
+    }
+    if(this.isCouponApplied == "false"){
+      this.couponApplied ="Not Applied";
+    }
+    else{
+      this.couponApplied ="Applied";
+
+    }
   }
 
   return(){
@@ -32,13 +46,12 @@ export class ReturnComponent implements OnInit {
       console.log(data);
       })
 
-      this.message = "Your Order is requested for Return";
+      alert("Your Order is requested for Return")
 
       this.router.navigate(['customer/orderlist'])
     }
     else{
-      this.message = "Cannot Return as the Coupan was applied on given order";
-      alert("Cannot Return as the Coupan was applied on given order")
+      alert("Cannot Return as the Coupon was applied on given order")
     }
   }
 
@@ -52,12 +65,12 @@ export class ReturnComponent implements OnInit {
         this.router.navigate(["/user/login"])
       });
 
-      this.message = "Your Order is requested for Cancelliation";
+      alert("Your Order is requested for Cancellation")
+
       this.router.navigate(['customer/orderlist'])
     }
     else{
-      this.message = "Cannot Cancel as the Coupoun was applied on this order";
-      alert("Cannot Cancel as the Coupoun was applied on this order")
+      alert("Cannot Cancel as the Coupon was applied on this order")
     }
   }
 

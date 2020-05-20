@@ -12,7 +12,7 @@ import { CustomerService } from '../CustomerService/customer.service';
 })
 export class CustomerHomeComponent implements OnInit {
   submitted:boolean=false;
-  getcust:Customer;
+  getcust:Customer = new Customer;
 
   constructor(private router:Router,private custservice:CustomerService) { }
 

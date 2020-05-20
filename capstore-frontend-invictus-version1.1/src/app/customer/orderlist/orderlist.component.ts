@@ -40,6 +40,12 @@ export class OrderlistComponent implements OnInit {
       alert("Session Expired....Login Again");
       this.router.navigate(["/user/login"])
     });
+
+    this.orders.sort((a,b) =>{
+      return <any> new Date(b.orderDate) - <any> new Date(a.orderDate);
+    })
+
+    console.log(this.orders)
   }
 
   orderStatus(order:Order){

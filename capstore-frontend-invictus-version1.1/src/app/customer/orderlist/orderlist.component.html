@@ -1,8 +1,8 @@
 <div class="container-fluid" style="margin-bottom: 5%;">
     <div class="col-md-12 row" style="margin-top: 2%;margin-left: 5%;">
-        <div class="form-group col-md-7">
+        <!-- <div class="form-group col-md-7">
             <input type="text" class="form-control" placeholder="Search Customer" style="border-radius: 20px;">
-        </div>
+        </div> -->
         <i class="fas fa-list offset-md-1" style="margin-top: 1%;" (click)="toggleViewList()">&nbsp;List
             View</i>&nbsp;&nbsp;
         <i class="fas fa-address-card" style="margin-top: 1%;" (click)="toggleViewCard()">Card View</i>
@@ -22,7 +22,7 @@
                         
                         <h4 class=" cardData textSize" style="margin-top: 10px; ">Order Id: {{order.orderId}}</h4>
                         <h5 class=" cardData textSize">Product Name: {{order.product.productName}}</h5>
-                        <h5 class="cardData textSize">Order Date: {{order.orderDate}}</h5>
+                        <h5 class="cardData textSize">Order Date: {{order.orderDate | date}}</h5>
                         <h5 class=" cardData textSize">Price: {{order.orderAmount}}</h5>
                         <h5 class=" cardData textSize">Status: {{order.orderStatus}}</h5>
                         <div class="row">
@@ -64,7 +64,7 @@
                     
                     <td style="width: 150px;">{{order.orderId}}</td>
                     <td style="width: 150px;">{{order.product.productName}}</td>
-                    <td style="width: 150px;">{{order.orderDate}}</td>
+                    <td style="width: 150px;">{{order.orderDate | date}}</td>
                     <td style="width: 150px;">{{order.orderAmount}}</td>
                     <!-- <td style="width: 250px;">{{order.orderStatus}}</td> -->
                     <td><button type="button" class="btn btn-outline-add " (click)="viewDetails(order)">View Details</button></td>
@@ -85,7 +85,7 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Order Information</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle">Status Information</h5>
                         <button type="button btn-outline-add " class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -99,7 +99,7 @@
 
                                         <div class="card-body">
                                             <h3>Status : {{order1.orderStatus}}</h3>
-                                            <h4>Updated On :{{order1.statusDate}}</h4>
+                                            <h4>Updated On :{{order1.statusDate | date}}</h4>
                                             
                                         </div>
                                     </div>
