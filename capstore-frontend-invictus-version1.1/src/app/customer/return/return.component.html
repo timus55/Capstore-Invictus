@@ -62,7 +62,7 @@
             <tbody>
                 <tr>
                     <td>{{order.transaction.transactionId}}</td>
-                    <td>{{order.transaction.transactionDate | date}}</td>
+                    <td>{{order.transaction.transactionDate }}</td>
                     <td>{{order.transaction.transactionMoney}}</td>
                     <td>{{order.transaction.transactionMethod}}</td>
                     <td>{{order.transaction.transactionStatus}}</td>
@@ -71,11 +71,12 @@
             <br>
            
         </table>
-        <div class="col offset-3" *ngIf="cancelStatus">
-            <button class="btn btn-outline-add " [disabled]="!cancellation " (click)="cancel()">Request to Cancellation</button>
+        <!-- *ngIf="cancelStatus" -->
+        <div class="col offset-3" >
+            <button class="btn btn-outline-add " [disabled]="!isDelivered || !disableButtons" (click)="requestCancel()">Request to Cancellation</button>
             
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <button class="btn btn-outline-add " [disabled]="cancellation " (click)="return()">Request to return order</button>
+            <button class="btn btn-outline-add " [disabled]="isDelivered ||  !disableButtons" (click)="requestReturn()">Request to return order</button>
         </div>
        
         <br><br>
