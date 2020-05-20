@@ -181,11 +181,11 @@ margin-left: 280px;
 .editButton {
     width: 230px;
     border-radius: 25px;
-    background-color: yellowgreen;
+    background: #977cb3;
     outline: none;
     margin-left: 30%;
 }
 
 .editButton:hover {
-    background-color: green;
+    background: #977cb3;
 }

@@ -193,9 +193,8 @@ public class CustomerDaoImpl implements ICustomerDao{
 		{
 			CustomerDetails customer = customerRepository.getOne(username);
 			Set<Order> orders = customer.getOrders();
-			List <Order> orders1=(List<Order>) orders;
-			orders1.sort((e1, e2) -> e1.getOrderDate().compareTo(e2.getOrderDate()));
-			for (Order order : orders1) {
+			
+			for (Order order : orders) {
 				if(order.getOrderId()==orderId) {
 					
 					Date date = new Date();
@@ -203,7 +202,7 @@ public class CustomerDaoImpl implements ICustomerDao{
 					
 					order.setStatusDate(timeStamp);
 					order.setOrderStatus(status);
-					orders=(Set<Order>) orders1;
+					
 					customer.setOrders(orders);
 					customerRepository.save(customer);
 					return true;

@@ -34,16 +34,14 @@ export class OrderlistComponent implements OnInit {
   ngOnInit() {
      console.log("In OnInit Block")
     this.customerService.getMyOrders(localStorage.token).subscribe(data=>{
-      this.orders=data;
+      
+      this.orders=data.sort((a,b)=>(b.orderId) - (a.orderId));
+
       console.log(this.orders);
     },err=>{
       alert("Session Expired....Login Again");
       this.router.navigate(["/user/login"])
     });
-
-    this.orders.sort((a,b) =>{
-      return <any> new Date(b.orderDate) - <any> new Date(a.orderDate);
-    })
 
     console.log(this.orders)
   }

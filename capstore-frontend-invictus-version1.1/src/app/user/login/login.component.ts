@@ -28,6 +28,19 @@ export class LoginComponent implements OnInit {
       password: ['', Validators.required]
     })
 
+    if(localStorage.token != null && localStorage.role!=null){
+     this.service.welcome(localStorage.token).subscribe(data=>{
+       if(localStorage.role == 'ROLE_CUSTOMER'){
+        this.router.navigate(["/customer"]);
+       }
+       else if(localStorage.role == 'ROLE_MERCHANT'){
+          this.router.navigate(["/merchant"]);
+
+       }
+    });
+    }
+    
+
   }
 
 
