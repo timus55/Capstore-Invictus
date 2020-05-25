@@ -14,6 +14,8 @@ export class StatusComponent implements OnInit {
   constructor(private customerService : CustomerService,private router:Router){  }
 
   ngOnInit() {
+    if(localStorage.role=="ROLE_MERCHANT")
+  this.router.navigate(["/merchant"]);
   }
 
   display(){
@@ -22,8 +24,14 @@ export class StatusComponent implements OnInit {
       this.orders=data;
       console.log(this.orders);
     },err=>{
-      alert("Session Expired....Login Again");
+      console.log(err)
+      if(err.error=="Session Expired"){
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        alert("Session Expired....Login Again");
       this.router.navigate(["/user/login"])
+      }
+      
     });
   }
 

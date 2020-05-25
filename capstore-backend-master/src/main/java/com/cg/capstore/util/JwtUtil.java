@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,8 @@ import java.util.function.Function;
 @Service
 public class JwtUtil {
 
+	private Logger logger = Logger.getRootLogger();
+	
     private String secret = "capstore";
     @Autowired
 	UserRepository userRepository;
@@ -54,6 +57,7 @@ public class JwtUtil {
 
     private String createToken(Map<String, Object> claims, String subject,String role) {
 
+    	logger.info("New token created");
         return Jwts.builder().setClaims(claims).setId(role).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000*60*60*24*10 ))
                 .signWith(SignatureAlgorithm.HS256, secret).compact();

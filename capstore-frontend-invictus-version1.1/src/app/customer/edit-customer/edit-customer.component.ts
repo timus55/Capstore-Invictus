@@ -18,6 +18,9 @@ export class EditCustomerComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private router: Router,private custservice:CustomerService) { }
 
   ngOnInit() {
+    if(localStorage.role=="ROLE_MERCHANT")
+  this.router.navigate(["/merchant"]);
+
     this.editProfileForm = this.formBuilder.group({
       username: [{ value: '', disabled: true }],
       name: [{ value: '', disabled: true }],
@@ -32,10 +35,17 @@ export class EditCustomerComponent implements OnInit {
       
     });
     this.custservice.getcustomerdetails(localStorage.token).subscribe(data=>{
+      if(data!=null)
       this.editProfileForm.setValue(data);
     },err=>{
-      alert("Session Expired....Login Again");
+      console.log(err)
+      if(err.error=="Session Expired"){
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        alert("Session Expired....Login Again");
       this.router.navigate(["/user/login"])
+      }
+      
     });
   }
 
@@ -51,8 +61,14 @@ export class EditCustomerComponent implements OnInit {
       this.router.navigate(['/customer']);
       console.log(data);
     },err=>{
-      alert("Session Expired....Login Again");
+      console.log(err)
+      if(err.error=="Session Expired"){
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        alert("Session Expired....Login Again");
       this.router.navigate(["/user/login"])
+      }
+      
     });
   }
 

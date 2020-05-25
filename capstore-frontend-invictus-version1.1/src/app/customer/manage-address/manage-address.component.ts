@@ -17,6 +17,8 @@ export class ManageAddressComponent implements OnInit {
   constructor(private customerService: CustomerService, private router: Router) { }
 
   ngOnInit() {
+    if(localStorage.role=="ROLE_MERCHANT")
+  this.router.navigate(["/merchant"]);
     this.getAddress();
   }
   getAddress() {
@@ -30,10 +32,16 @@ export class ManageAddressComponent implements OnInit {
       else {
         this.temp = true;
       }
-    },
-      err => {
-        console.log(err.stack);
-      })
+    },err=>{
+      console.log(err)
+      if(err.error=="Session Expired"){
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        alert("Session Expired....Login Again");
+      this.router.navigate(["/user/login"])
+      }
+      
+    });
   }
   delete(addId) {
     this.customerService.deleteAddress(addId).subscribe(data => {
@@ -42,10 +50,25 @@ export class ManageAddressComponent implements OnInit {
       this.customerService.viewAddress(localStorage.token).subscribe(data => { //localstorage should have username
         this.addresses = data;
         console.log(this.addresses);
-      })
+      },err=>{
+        console.log(err)
+        if(err.error=="Session Expired"){
+          localStorage.removeItem("token");
+        localStorage.removeItem("role");
+          alert("Session Expired....Login Again");
+        this.router.navigate(["/user/login"])
+        }
+        
+      });
     },err=>{
-      alert("Session Expired....Login Again");
+      console.log(err)
+      if(err.error=="Session Expired"){
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        alert("Session Expired....Login Again");
       this.router.navigate(["/user/login"])
+      }
+      
     });
 
 

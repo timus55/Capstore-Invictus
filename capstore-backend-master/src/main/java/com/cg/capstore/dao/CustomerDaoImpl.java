@@ -11,6 +11,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -40,6 +41,9 @@ public class CustomerDaoImpl implements ICustomerDao{
 	
 	@Autowired
 	MerchantRepository merchantRepository;
+	
+	private Logger logger = Logger.getRootLogger();
+	
 	CustomerDetails customer = new CustomerDetails();
 	User user = new User();
 	MerchantDetails merchant = new MerchantDetails();
@@ -51,8 +55,10 @@ public class CustomerDaoImpl implements ICustomerDao{
 
 	@Override
 	public String createNewUser(UserDetails userDetails) throws Exception{
+		logger.info("In CutomerDaoImpl at function createNewUSer");
 		if(userRepository.existsById(userDetails.getUsername()))
 		{
+			logger.error("User Already Exists");
 			return "User Already Exists.Try Login/forgot password...";
 		}
 		else {
@@ -84,12 +90,14 @@ public class CustomerDaoImpl implements ICustomerDao{
 				merchantRepository.save(merchant);
 			}
 			userRepository.save(user);
+			logger.info(userDetails.getName()+" is registered successfully!..");
 			return userDetails.getName()+" is registered successfully!..";
 		}
 	}
 
 	@Override
 	public boolean changePassword(String username, String oldPassword, String newPassword) throws Exception {
+		logger.info("In CutomerDaoImpl at function changePassword");
 
 		try {
 			
@@ -100,18 +108,22 @@ public class CustomerDaoImpl implements ICustomerDao{
 						String hashNewPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt(12));
 						user.setPassword(hashNewPassword);
 						userRepository.save(user);
+						logger.info("Password changed for "+user.getUsername());
 						return true;
 					}
 				}
 			
 		} catch (Exception exception) {
+			logger.error(exception.getMessage());
 			throw exception;
 		}
+		logger.error("Incorrect current Password");
 		return false;
 	}
 
 	@Override
 	public String forgotPassword(String username, String securityQuestion, String securityAnswer) throws Exception {
+		logger.info("In CutomerDaoImpl at function forgotPassword");
 		try {
 			user=userRepository.getOne(username);;
 			if(user.getSecurityQuestion().equals(securityQuestion)&&user.getSecurityAnswer().equals(securityAnswer)) {
@@ -142,12 +154,15 @@ public class CustomerDaoImpl implements ICustomerDao{
 //				String pass1=pass.replace( pass, randomPass);
 				user.setPassword(BCrypt.hashpw(randomPass, BCrypt.gensalt(12)));
 				userRepository.save(user);
+				logger.info("Random Password generated");
 				return randomPass;
 			}
 			else {			
+				logger.error("Invalid securityQuestion/Answer");
 				return "invalid";
 			}
 		}catch (Exception exception) {
+			logger.error("User doesn't exist");
 			throw exception;
 		}
 
@@ -155,17 +170,20 @@ public class CustomerDaoImpl implements ICustomerDao{
 
 	@Override
 	public Set<Order> getOrders(String username) {
+		logger.info("In CutomerDaoImpl at function getOrders");
 		if(customerRepository.existsById(username)) 
 		{
-			CustomerDetails cd = customerRepository.getOne(username);
-			return cd.getOrders();
+			CustomerDetails customerDetails = customerRepository.getOne(username);
+			logger.info("Orders Fetched for "+customerDetails.getName());
+			return customerDetails.getOrders();
 		}
 		
-		
+		logger.error("User doesn't exist");
 		return null;
 	}
 	@Override
 	public String getStatus(String username,Integer orderId) {
+		logger.info("In CutomerDaoImpl at function getStatus");
 		if(customerRepository.existsById(username)) 
 		{
 			CustomerDetails customer = customerRepository.getOne(username);
@@ -182,6 +200,7 @@ public class CustomerDaoImpl implements ICustomerDao{
 				}
 			}
 		}
+		logger.error("User doesn't exist");
 		return "false";	
 	}
 	
@@ -189,6 +208,7 @@ public class CustomerDaoImpl implements ICustomerDao{
 
 	@Override
 	public boolean updateStatus(String username, Integer orderId, String status) {
+		logger.info("In CutomerDaoImpl at function updateStatus");
 		if(customerRepository.existsById(username)) 
 		{
 			CustomerDetails customer = customerRepository.getOne(username);
@@ -202,13 +222,14 @@ public class CustomerDaoImpl implements ICustomerDao{
 					
 					order.setStatusDate(timeStamp);
 					order.setOrderStatus(status);
-					
 					customer.setOrders(orders);
 					customerRepository.save(customer);
+					logger.info("Status updated for order of "+customer.getName());
 					return true;
 				}
 			}
 		}
+		logger.error("User doesn't exist");
 		return false;
 	}
 	
@@ -217,10 +238,12 @@ public class CustomerDaoImpl implements ICustomerDao{
 	@Override
 	public List<Address> viewAddress(String userName)
 	{
+		logger.info("In CutomerDaoImpl at function viewAdress");
 		String qStr = "SELECT a FROM Address a WHERE username=:uId";
 		TypedQuery<Address> query = entityManager.createQuery(qStr, Address.class);
 		query.setParameter("uId", userName);
 		List<Address> add = query.getResultList();
+		logger.info("Addresses fetched for "+userName);
 		return add;
 	}
 	
@@ -228,6 +251,7 @@ public class CustomerDaoImpl implements ICustomerDao{
 	public boolean deleteAddress(Integer addressId)
 	
 	{
+		logger.info("In CutomerDaoImpl at function deleteAddress");
 		
 		String qStr = "SELECT a FROM Address a WHERE a.addressId =: addId";
 		TypedQuery<Address> query = entityManager.createQuery(qStr, Address.class);
@@ -236,6 +260,7 @@ public class CustomerDaoImpl implements ICustomerDao{
 		add.setDeleted(true);
 		Session cs = entityManager.unwrap(Session.class);
 		cs.saveOrUpdate(add);
+		logger.info("Address deleted of id "+addressId);
 		return true;
 		
 	}
@@ -243,6 +268,7 @@ public class CustomerDaoImpl implements ICustomerDao{
 	@Override
 	public boolean addAddress(Address add,String userName)
 	{
+		logger.info("In CutomerDaoImpl at function addAddress");
 		String command = "select user from User user where user.username =: puser";
 		TypedQuery<User> query2 = entityManager.createQuery(command, User.class);
 		query2.setParameter("puser", userName);
@@ -252,17 +278,22 @@ public class CustomerDaoImpl implements ICustomerDao{
 		add.setDeleted(false);
 		Session cs = entityManager.unwrap(Session.class);
 		cs.saveOrUpdate(add);
+		logger.info("Address added for "+userName);
 		return true;
 	}
 	
 	@Override
 	public CustomerDetails getUserDetails(String username)
 	{
+		logger.info("In CutomerDaoImpl at function getUserDetails");
 		if(customerRepository.existsById(username)) 
 		{
-			CustomerDetails cd = customerRepository.getOne(username);
-			return cd;
+			
+			CustomerDetails customerDetails = customerRepository.getOne(username);
+			logger.info("Customer details fetched of "+customerDetails.getName());
+			return customerDetails;
 		}
+		logger.error("User doesn't exist");
 		return null;
 		
 	}
@@ -270,7 +301,9 @@ public class CustomerDaoImpl implements ICustomerDao{
 	@Override
 	public String editUser(CustomerDetails customer)
 	{
+		logger.info("In CutomerDaoImpl at function editUser");
 		customerRepository.save(customer);
+		logger.info("Customer Updated - "+customer.getName());
 		return "updated successfully";
 		
 	}

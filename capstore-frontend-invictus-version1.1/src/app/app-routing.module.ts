@@ -12,7 +12,7 @@ const routes: Routes = [
   { path: 'merchant', loadChildren:()=>import('./merchant/merchant.module').then(m=>m.MerchantModule)},
   { path: 'user', loadChildren:()=>import('./user/user.module').then(m=>m.UserModule)},
   {path:'error',component:ServerErrorComponent},
-  { path: '', redirectTo :'/home',pathMatch:'full'},
+  { path: '', redirectTo :'/user/login',pathMatch:'full'},
   { path: '**' , component:NotFoundComponent}
 ];
 

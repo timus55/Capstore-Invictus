@@ -11,11 +11,13 @@ import { CustomerService } from '../CustomerService/customer.service';
 export class AddAddressComponent implements OnInit {
   addForm: FormGroup;
   submitted: boolean = false;
-  username = "dummyCust" // set by token 
 
   constructor(private formBuilder: FormBuilder, private router: Router, private customerService: CustomerService) { }
 
   ngOnInit() {
+    if(localStorage.role=="ROLE_MERCHANT")
+  this.router.navigate(["/merchant"]);
+
     this.addForm = this.formBuilder.group({
       addressLineOne: ['', Validators.required],
       addressLineTwo: ['', Validators.required],
@@ -35,12 +37,16 @@ export class AddAddressComponent implements OnInit {
       console.log(data);
       alert(`you've added address sucessfully`);
       this.router.navigate(['customer/manage-address']);
-    },
-      err => {
-        console.log(err);
+    },err=>{
+      console.log(err)
+      if(err.error=="Session Expired"){
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
         alert("Session Expired....Login Again");
       this.router.navigate(["/user/login"])
-      })
+      }
+      
+    });
 
   }
 

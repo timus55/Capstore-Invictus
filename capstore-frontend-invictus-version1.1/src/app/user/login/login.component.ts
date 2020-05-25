@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { JwtClientService } from '../JWTservice/jwt-client.service';
 import * as jwt_decode from 'jwt-decode';
 import { Router } from '@angular/router';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-login',
@@ -16,29 +16,27 @@ export class LoginComponent implements OnInit {
   authRequest: any;
 
   response: any;
-  constructor(private formBuilder: FormBuilder, private service: JwtClientService, private router: Router) {
+  constructor(private formBuilder: FormBuilder, private service: UserService, private router: Router) {
 
 
   }
 
   ngOnInit() {
+
+    if(localStorage.token != null && localStorage.role!=null){
+        if(localStorage.role == 'ROLE_CUSTOMER'){
+         this.router.navigate(["/customer"]);
+        }
+        else if(localStorage.role == 'ROLE_MERCHANT'){
+           this.router.navigate(["/merchant"]);
+ 
+        }
+    }
     this.loginForm = this.formBuilder.group({
 
       username: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     })
-
-    if(localStorage.token != null && localStorage.role!=null){
-     this.service.welcome(localStorage.token).subscribe(data=>{
-       if(localStorage.role == 'ROLE_CUSTOMER'){
-        this.router.navigate(["/customer"]);
-       }
-       else if(localStorage.role == 'ROLE_MERCHANT'){
-          this.router.navigate(["/merchant"]);
-
-       }
-    });
-    }
     
 
   }

@@ -23,8 +23,7 @@ export class OrderlistComponent implements OnInit {
     statusDate: null,
     transaction:null
     }
-  // constructor(private orderservice:OrderslistService) { }
-  searchText:string;
+
   view:boolean=true;
   
 
@@ -32,6 +31,8 @@ export class OrderlistComponent implements OnInit {
 
   }
   ngOnInit() {
+    if(localStorage.role=="ROLE_MERCHANT")
+  this.router.navigate(["/merchant"]);
      console.log("In OnInit Block")
     this.customerService.getMyOrders(localStorage.token).subscribe(data=>{
       
@@ -39,8 +40,14 @@ export class OrderlistComponent implements OnInit {
 
       console.log(this.orders);
     },err=>{
-      alert("Session Expired....Login Again");
+      console.log(err)
+      if(err.error=="Session Expired"){
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        alert("Session Expired....Login Again");
       this.router.navigate(["/user/login"])
+      }
+      
     });
 
     console.log(this.orders)

@@ -14,6 +14,21 @@ public class UserDetails {
 	private String role;
 	
 	
+	
+	public UserDetails(String username, String name, String password, String phoneNo, String alternatePhoneNo,
+			String alternateEmail, String gender, String securityQuestion, String securityAnswer, String role) {
+		super();
+		this.username = username;
+		this.name = name;
+		this.password = password;
+		this.phoneNo = phoneNo;
+		this.alternatePhoneNo = alternatePhoneNo;
+		this.alternateEmail = alternateEmail;
+		this.gender = gender;
+		this.securityQuestion = securityQuestion;
+		this.securityAnswer = securityAnswer;
+		this.role = role;
+	}
 	public String getUsername() {
 		return username;
 	}

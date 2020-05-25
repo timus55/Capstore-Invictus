@@ -1,9 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { AddCustomerComponent } from './add-customer/add-customer.component';
-import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
-import { ChangePasswordComponent } from './change-password/change-password.component';
 import { AddAddressComponent } from './add-address/add-address.component';
 import { EditCustomerComponent } from './edit-customer/edit-customer.component';
 import { ManageAddressComponent } from './manage-address/manage-address.component';
@@ -16,9 +13,6 @@ import { CustomerHomeComponent } from './customer-home/customer-home.component';
 const routes: Routes = [
   {path:'',component:DashboardComponent,children:[
 
-    {path:'addCustomer',component:AddCustomerComponent},
-    {path:'forgotPassword',component:ForgotPasswordComponent},
-    {path:'changePassword', component:ChangePasswordComponent},
     {path:'add-address', component:AddAddressComponent},
   {path:'edit-customer', component:EditCustomerComponent},
   {path:'manage-address', component:ManageAddressComponent},

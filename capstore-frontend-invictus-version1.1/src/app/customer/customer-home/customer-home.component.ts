@@ -17,17 +17,25 @@ export class CustomerHomeComponent implements OnInit {
   constructor(private router:Router,private custservice:CustomerService) { }
 
   ngOnInit() {
-  
+  if(localStorage.role=="ROLE_MERCHANT")
+  this.router.navigate(["/merchant"]);
     this.getuser()
   }
 
   public getuser(){
     this.custservice.getcustomerdetails(localStorage.token).subscribe(data=>{
         console.log(data);
-        this.getcust=data;
+        if(data!=null)
+         this.getcust=data;
     },err=>{
-      alert("Session Expired....Login Again");
+      console.log(err)
+      if(err.error=="Session Expired"){
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        alert("Session Expired....Login Again");
       this.router.navigate(["/user/login"])
+      }
+      
     });
   }
 

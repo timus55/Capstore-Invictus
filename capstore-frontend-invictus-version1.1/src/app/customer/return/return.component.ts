@@ -10,16 +10,16 @@ import { CustomerService } from '../CustomerService/customer.service';
 })
 export class ReturnComponent implements OnInit {
 
- order:Order;
- isCouponApplied:any ;
- isDelivered:boolean = true;
-//  cancelStatus:boolean = true;
- couponApplied:string ="";
- disableButtons:boolean=false;
+  order:Order;
+  isCouponApplied:any ;
+  isDelivered:boolean = true;
+  couponApplied:string ="";
+  disableButtons:boolean=false;
   constructor(private customerService : CustomerService,private router:Router) { }
 
   ngOnInit() {
-   
+    if(localStorage.role=="ROLE_MERCHANT")
+  this.router.navigate(["/merchant"]);
     this.order = this.customerService.getOrder();
     this.customerService.getStatus(localStorage.token,this.order.orderId).subscribe(data=>{
       console.log(data);
@@ -33,6 +33,15 @@ export class ReturnComponent implements OnInit {
         this.couponApplied ="Applied";
         this.disableButtons = false;  
       }
+    },err=>{
+      console.log(err)
+      if(err.error=="Session Expired"){
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        alert("Session Expired....Login Again");
+      this.router.navigate(["/user/login"])
+      }
+      
     });
 
     if(this.order.orderStatus === "Delivered"){
@@ -42,16 +51,21 @@ export class ReturnComponent implements OnInit {
      || this.order.orderStatus === "Request For Cancellation"){
       this.disableButtons = false;
     }
-    
   }
 
-  requestReturn(){
+  return(){
 
     if(this.isCouponApplied == "false"){
-      console.log("Request Return")
       this.customerService.updateStatus(localStorage.token,this.order.orderId,"Request For Return").subscribe(data=>{
       console.log(data);
-      })
+      },err=>{
+        console.log(err)
+        if(err.error=="Session Expired"){
+          alert("Session Expired....Login Again");
+        this.router.navigate(["/user/login"])
+        }
+        
+      });
 
       alert("Your Order is requested for Return")
 
@@ -62,15 +76,18 @@ export class ReturnComponent implements OnInit {
     }
   }
 
-  requestCancel(){
+  cancel(){
  
     if(this.isCouponApplied == "false"){
-      console.log("Request Cancellation")
       this.customerService.updateStatus(localStorage.token,this.order.orderId,"Request For Cancellation").subscribe(data=>{
       console.log(data);
       },err=>{
-        alert("Session Expired....Login Again");
+        console.log(err)
+        if(err.error=="Session Expired"){
+          alert("Session Expired....Login Again");
         this.router.navigate(["/user/login"])
+        }
+        
       });
 
       alert("Your Order is requested for Cancellation")
