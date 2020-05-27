@@ -169,17 +169,29 @@ public class CustomerDaoImpl implements ICustomerDao{
 	}
 
 	@Override
-	public Set<Order> getOrders(String username) {
+	public List<Order> getOrders(String username) {
 		logger.info("In CutomerDaoImpl at function getOrders");
-		if(customerRepository.existsById(username)) 
+//		if(customerRepository.existsById(username)) 
 		{
-			CustomerDetails customerDetails = customerRepository.getOne(username);
-			logger.info("Orders Fetched for "+customerDetails.getName());
-			return customerDetails.getOrders();
+//			CustomerDetails customerDetails = customerRepository.getOne(username);
+//			logger.info("Orders Fetched for "+customerDetails.getName());
+//			return customerDetails.getOrders();
+			
+			String str="SELECT allOrders FROM Order allOrders where username=: uName ORDER BY allOrders.orderDate DESC";
+			TypedQuery<Order> query=entityManager.createQuery(str,Order.class);
+			query.setParameter("uName", username);
+			List<Order> orders=query.getResultList();
+			for (Order order : orders) {
+				System.out.println(order.getOrderDate());
+			}
+			return orders;
+			
 		}
 		
-		logger.error("User doesn't exist");
-		return null;
+//		logger.error("User doesn't exist");
+//		return null;
+		
+		
 	}
 	@Override
 	public String getStatus(String username,Integer orderId) {

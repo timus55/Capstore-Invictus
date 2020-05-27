@@ -50,10 +50,11 @@ export class ReturnComponent implements OnInit {
     if(this.order.orderStatus === "Cancelled" || this.order.orderStatus === "Request For Return"
      || this.order.orderStatus === "Request For Cancellation"){
       this.disableButtons = false;
+      
     }
   }
 
-  return(){
+  requestReturn(){
 
     if(this.isCouponApplied == "false"){
       this.customerService.updateStatus(localStorage.token,this.order.orderId,"Request For Return").subscribe(data=>{
@@ -76,7 +77,7 @@ export class ReturnComponent implements OnInit {
     }
   }
 
-  cancel(){
+  requestCancel(){
  
     if(this.isCouponApplied == "false"){
       this.customerService.updateStatus(localStorage.token,this.order.orderId,"Request For Cancellation").subscribe(data=>{

@@ -1,10 +1,105 @@
-<div class="row container-fluid mt-2">
-    <div class="col-lg-12 mt-2">
-        <h5 class="text-center pt-3"><i class="fas fa-list-ul"></i> &nbsp;Detail Description</h5>
-        <br>
-        
-        <table class="table table-striped  ">
-            <caption class="text-center">Order Info</caption>
+<div class="animated">
+
+
+    <div class="row  mt-2">
+        <div class="col-lg-12 mt-2">
+            <h3 class="text-center pt-3"><i class="fas fa-list-ul"></i> &nbsp;Detail Description</h3>
+            <br>
+            <div>
+                <div class="row justify-content-center">
+                    <div class="col-7  text-center">
+                        <div class="card card-center border-secondary mb-3" style="height: 330px;">
+                            <div class="card-header text-center">
+                                <h3>Order Information</h3>
+                            </div>
+                            <div class="card-body text-left text-dark">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <h4 class="card-title"> <strong>Order Id :</strong> {{order.orderId}}</h4>
+
+                                    </div>
+                                    <div class="col-6">
+                                        <h4 class="card-title"><strong>Order Amount :</strong> {{order.orderAmount}}
+                                        </h4>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <h4 class="card-title"><strong>Order Date :</strong> {{order.orderDate | date }}
+                                        </h4>
+                                    </div>
+                                    <div class="col-6">
+                                        <h4 class="card-title"><strong>Merchant Name :</strong>
+                                            {{order.product.merchant.name}}</h4>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h4 class="card-title"><strong>Product Name :</strong>
+                                            {{order.product.productName}}</h4>
+                                    </div>
+                                    <div class="col-12">
+                                        <h4 class="card-title"><strong>Product Description :</strong>
+                                            {{order.product.productInfo}}</h4>
+                                    </div>
+                                    <div class="col-12">
+                                        <h4 class="card-title"><strong>Coupon Applied :</strong> {{couponApplied}}</h4>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4  text-center">
+                        <div class="card card-center border-secondary mb-3" style="height: 330px;">
+                            <div class="card-header text-center">
+                                <h3>Shipping Information</h3>
+                            </div>
+                            <div class="card-body text-left text-dark">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h4 class="card-title"> <strong>Shipping Id :</strong>
+                                            {{order.address.addressId}}</h4>
+
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h4 class="card-title"> {{order.address.addressLineOne}}<br />
+                                            {{order.address.addressLineTwo}}<br />
+                                            {{order.address.district}}<br />
+                                            {{order.address.state}}<br />
+                                        </h4>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h4 class="card-title"><strong>Status :</strong> {{order.orderStatus}}</h4>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <br><br>
+
+
+
+            </div>
+            <div class="row justify-content-center">
+
+                <h2 class="text-center">Transaction Details</h2>
+                <br>
+                <table class="table table-striped col-10   ">
+
+                    <!-- <caption class="text-center">Order Info</caption>
             <thead>
                 
                 <tr>
@@ -47,43 +142,58 @@
                     <td>{{order.address.state}}</td>
                     <td>{{order.orderStatus}}</td>
                 </tr>
-            </tbody>
-            <br>
-            <thead>
-                <caption class="text-center">Transaction Info</caption>
-                <tr>
-                    <th scope="col">Transaction ID</th>
-                    <th scope="col">Transaction Date</th>
-                    <th scope="col">Transaction Amount</th>
-                    <th scope="col">Transaction Method</th>
-                    <th scope="col">Transaction Status</th>   
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{order.transaction.transactionId}}</td>
-                    <td>{{order.transaction.transactionDate }}</td>
-                    <td>{{order.transaction.transactionMoney}}</td>
-                    <td>{{order.transaction.transactionMethod}}</td>
-                    <td>{{order.transaction.transactionStatus}}</td>
-                </tr>
-            </tbody>
-            <br>
-           
-        </table>
-        <!-- *ngIf="cancelStatus" -->
-        <div class="col offset-3" >
-            <button class="btn btn-outline-add " [disabled]="!isDelivered || !disableButtons" (click)="requestCancel()">Request to Cancellation</button>
-            
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <button class="btn btn-outline-add " [disabled]="isDelivered ||  !disableButtons" (click)="requestReturn()">Request to return order</button>
+            </tbody> -->
+                    <br>
+
+                    <thead>
+
+                        <tr>
+                            <th scope="col">Transaction ID</th>
+                            <th scope="col">Transaction Date</th>
+                            <th scope="col">Transaction Amount</th>
+                            <th scope="col">Transaction Method</th>
+                            <th scope="col">Transaction Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{order.transaction.transactionId}}</td>
+                            <td>{{order.transaction.transactionDate | date }}</td>
+                            <td>{{order.transaction.transactionMoney}}</td>
+                            <td>{{order.transaction.transactionMethod}}</td>
+                            <td>{{order.transaction.transactionStatus}}</td>
+                        </tr>
+                    </tbody>
+                    <br>
+
+                </table>
+               
+            </div>
+            <br><br>
+            <div class="row justify-content-center">
+                <div class=" ">
+                    <button class="btn btn-outline-add " [disabled]="!isDelivered || !disableButtons"
+                        (click)="requestCancel()">Request to Cancellation</button>
+
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button class="btn btn-outline-add " [disabled]="isDelivered ||  !disableButtons"
+                        (click)="requestReturn()">Request to return order</button>
+                </div>
+
+                
+            </div>
+
+            <br><br>
+            <div class="row justify-content-center">
+                
+                <div clas="text-center text-danger" *ngIf="!disableButtons">
+                    <h4 class="text-danger">Can not cancel or return order as Coupon was Applied on your Order</h4>
+                </div>
+            </div>
         </div>
-       
-        <br><br>
+
+
     </div>
 
-    
+
 </div>
-
-
-

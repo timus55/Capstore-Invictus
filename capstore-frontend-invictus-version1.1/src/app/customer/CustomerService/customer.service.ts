@@ -4,9 +4,6 @@ import { Order } from 'src/app/models/orders.model';
 import { address } from 'src/app/models/address.model';
 import { Customer } from 'src/app/models/customer.model';
 
-
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -27,7 +24,6 @@ export class CustomerService {
     transaction:null
   }
 
-
   public saveOrder(order:Order){ //sumit
     this.ShareOrder= order;
   }
@@ -44,7 +40,7 @@ export class CustomerService {
     const headers = new HttpHeaders().set('Authorization', tokenStr);
     return this.http.get<String>(`http://localhost:8081/getStatus/${orderId}`,{headers,responseType:'text' as 'json'});
   }
-  public updateStatus(token,orderId:number,status:String){  //sumit
+  public updateStatus(token,orderId:number,status:String){ //sumit
     let tokenStr = 'Bearer ' + token;
     const headers = new HttpHeaders().set('Authorization', tokenStr);
     return this.http.get<Boolean>(`http://localhost:8081/updateStatus/${orderId}/${status}`,{headers});

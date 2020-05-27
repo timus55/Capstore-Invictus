@@ -28,7 +28,6 @@ import com.cg.capstore.response.UserDetails;
 import com.cg.capstore.service.ICustomerService;
 import com.cg.capstore.util.JwtUtil;
 
-
 @RestController
 @CrossOrigin("*")
 public class CustomerController {
@@ -97,11 +96,11 @@ public class CustomerController {
 	}
 
 	@GetMapping("/myorders")
-	public ResponseEntity<Set<Order>> getOrders(HttpServletRequest request) throws Exception{
+	public ResponseEntity<List<Order>> getOrders(HttpServletRequest request) throws Exception{
 		logger.info("In CutomerController at function getOrders");
 		final String token = request.getHeader("Authorization");			
 		final String username = jwtUtil.extractUsername(token.substring(7));
-		return new ResponseEntity<Set<Order>>(customerService.getOrders(username), HttpStatus.OK);
+		return new ResponseEntity<List<Order>>(customerService.getOrders(username), HttpStatus.OK);
 	}
 	
 	@GetMapping("/updateStatus/{orderId}/{status}")

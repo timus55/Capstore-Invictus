@@ -14,7 +14,7 @@ public interface ICustomerDao {
 	String createNewUser(UserDetails user) throws Exception;
 	boolean changePassword(String username, String oldPassword, String newPassword) throws Exception;
 	String forgotPassword(String username, String securityQuestion, String securityAnswer) throws Exception;
-	Set<Order>getOrders(String username);
+	List<Order>getOrders(String username);
 	String getStatus(String username,Integer orderId);
 	boolean updateStatus(String username,Integer orderId,String status);
 	public List<Address> viewAddress(String username);

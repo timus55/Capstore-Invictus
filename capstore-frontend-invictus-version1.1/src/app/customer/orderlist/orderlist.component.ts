@@ -36,8 +36,8 @@ export class OrderlistComponent implements OnInit {
      console.log("In OnInit Block")
     this.customerService.getMyOrders(localStorage.token).subscribe(data=>{
       
-      this.orders=data.sort((a,b)=>(b.orderId) - (a.orderId));
-
+      // this.orders=data.sort((a,b)=>(b.orderId) - (a.orderId));
+this.orders=data;
       console.log(this.orders);
     },err=>{
       console.log(err)

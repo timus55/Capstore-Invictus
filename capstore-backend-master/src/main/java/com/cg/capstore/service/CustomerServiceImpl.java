@@ -57,7 +57,7 @@ public class CustomerServiceImpl implements ICustomerService,UserDetailsService{
 	}
 
 	@Override
-	public Set<Order> getOrders(String username) {
+	public List<Order> getOrders(String username) {
 		return customerDao.getOrders(username);
 	}
 
